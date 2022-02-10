@@ -18,7 +18,7 @@ router.post('/', (req, res)=>{
 
     if(req.body.title !== undefined && req.body.price !== undefined && req.body.thumbnail !== undefined){
         let item = req.body;
-        res.send(JSON.stringify(products.addItem(item)));
+        res.status(200).send(JSON.stringify(products.addItem(item)));
     }
 })
 
