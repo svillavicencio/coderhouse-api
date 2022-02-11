@@ -53,3 +53,15 @@ const renderList = (products) => {
     return body;
 
 }
+
+
+export const renderMessages = (data) => {
+  const html = data.map((elem, index) => {
+    return(`<div style="display: flex">
+        <div style="color: blue">${elem.email} </div>
+        <div style="color: brown">${elem.date}: </div>
+        <div>${elem.msg}</div> 
+        </div>`)
+}).join(" ");
+document.getElementById('messages').innerHTML = html;
+}

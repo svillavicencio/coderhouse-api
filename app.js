@@ -28,12 +28,27 @@ app.get("/",(req, res)=>{
     res.render("index");
 });
 
+const messages = [
+    {
+        email: 'server@server.com',
+        date: new Date().toUTCString(),
+        msg: 'Testing Chat'
+    }
+];
+
 //socket
 const io = socketIO(server);
 io.on("connection",(socket)=>{
     console.log("user connected id:", socket.id);
     socket.on("new-product",(data)=>{
         io.sockets.emit("new-product", data);
+    });
+
+    socket.emit('messages', messages);
+
+    socket.on('new-message',data => {
+        messages.push(data);
+        io.sockets.emit('messages', messages);
     });
     
 });

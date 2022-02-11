@@ -1,7 +1,8 @@
 import { fetchData, postData } from "./fetch.js";
-import { render } from './render.js'
+import { render, renderMessages } from './render.js'
 const socket = io();
 const submit = document.getElementById("submit");
+const submitMsg = document.getElementById('submit-messages');
 
 socket.on("new-product",(data)=>{
     if(data.status === "ok"){
@@ -16,9 +17,25 @@ socket.on("new-product",(data)=>{
 
 });
 
+socket.on('messages', function(data) { renderMessages(data); });
+
+
+function addMessage() {
+    const mensaje = {
+        email: document.getElementById('email').value,
+        date: new Date().toUTCString(),
+        msg: document.getElementById('message').value 
+    };
+    socket.emit('new-message', mensaje);
+    return false;
+}
+
+
+
 
 window.addEventListener("DOMContentLoaded", async ()=>{
     submit.addEventListener("click", createItem);
+    submitMsg.addEventListener('click', addMessage)
     const data = await fetchData("/api/productos");
     render(data);
 })
